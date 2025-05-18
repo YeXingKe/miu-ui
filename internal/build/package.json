@@ -1,0 +1,40 @@
+{
+  "name": "@miu-ui/build",
+  "version": "0.0.1",
+  "description": "Build Toolchain for Miu UI",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "start": "gulp --require ./node_modules/@esbuild-kit/cjs-loader -f gulpfile.ts",
+    "dev": "pnpm run stub",
+    "stub": "unbuild --stub"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@esbuild-kit/cjs-loader": "^2.4.4",
+    "unbuild": "^3.5.0",
+    "vue": "^3.5.13"
+  },
+  "dependencies": {
+    "@pnpm/find-workspace-packages": "^6.0.9",
+    "@pnpm/types": "^1000.6.0",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vitejs/plugin-vue-jsx": "^4.1.2",
+    "chalk": "^5.4.1",
+    "components-helper": "^2.2.0",
+    "consola": "^3.4.2",
+    "esbuild": "^0.25.3",
+    "fast-glob": "^3.3.3",
+    "fs-extra": "^11.3.0",
+    "gulp": "^5.0.0",
+    "lodash": "^4.17.21",
+    "rollup": "^4.40.0",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "unplugin-vue-macros": "^2.14.5"
+  }
+}

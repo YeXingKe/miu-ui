@@ -1,0 +1,5 @@
+export const PKG_PREFIX = '@miu-ui'
+export const PKG_NAME = 'miu-ui'
+export const PKG_CAMELCASE_NAME = 'MiuUi'
+export const PKG_CAMELCASE_LOCAL_NAME = 'MiuUiLocale'
+export const PKG_BRAND_NAME = 'Miu Ui'
