@@ -1,2 +1,2 @@
-export * from './MiuButton'
-export * from './MiuGrid'
+export * from './button'
+export * from './grid'
