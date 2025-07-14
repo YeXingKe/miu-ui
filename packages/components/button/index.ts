@@ -1,4 +1,4 @@
-import MiuButton from './src/button.vue'
+import MiuButton from './src/index.vue'
 
 // MiuButton.install = function(Vue){
 //     Vue.component(MiuButton.name,MiuButton)

@@ -1,7 +1,8 @@
 import { resolve } from 'path'
 
+// projRoot= D:\develop\github\person\miu-ui
 export const projRoot = resolve(__dirname, '..', '..', '..')
-export const pkgRoot = resolve(projRoot, 'packages')
+export const pkgRoot = resolve(projRoot, 'packages') // miu-ui/
 export const compRoot = resolve(pkgRoot, 'components')
 export const themeRoot = resolve(pkgRoot, 'theme-chalk')
 export const hookRoot = resolve(pkgRoot, 'hooks')
@@ -9,6 +10,7 @@ export const localeRoot = resolve(pkgRoot, 'locale')
 export const directiveRoot = resolve(pkgRoot, 'directives')
 export const epRoot = resolve(pkgRoot, 'miu-ui')
 export const utilRoot = resolve(pkgRoot, 'utils')
+// miu-ui/internal/build
 export const buildRoot = resolve(projRoot, 'internal', 'build')
 
 // Docs
@@ -18,7 +20,7 @@ export const vpRoot = resolve(docRoot, '.vitepress')
 
 /** `/dist` */
 export const buildOutput = resolve(projRoot, 'dist')
-/** `/dist/element-plus` */
+/** `/dist/miu-ui` */
 export const epOutput = resolve(buildOutput, 'miu-ui')
 
 export const projPackage = resolve(projRoot, 'package.json')

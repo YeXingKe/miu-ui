@@ -16,7 +16,7 @@ export const generateExternal = async (options: { full: boolean }) => {
 }
 
 export function writeBundles(bundle: RollupBuild, options: OutputOptions[]) {
-  return Promise.all(options.map(option => bundle.write(option)))
+  return Promise.all(options.map(option => bundle.write(option))) // 生成最终的构建文件
 }
 
 export function formatBundleFilename(name: string, minify: boolean, ext: string) {

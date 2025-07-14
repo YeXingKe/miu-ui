@@ -1,1 +1,1 @@
-export { default as MiuButton } from './button.vue'
+export { default as MiuButton } from './index.vue'

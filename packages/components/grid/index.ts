@@ -1,1 +1,1 @@
-export { default as MiuGrid } from './src/grid.vue'
+export { default as MiuGrid } from './src/index.vue'

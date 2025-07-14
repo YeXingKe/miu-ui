@@ -3,10 +3,11 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "moduleResolution": "node",
+    "types": ["vue"],  // 确保包含 Vue 类型
+    "moduleResolution": "node",  // 使用 Node.js 模块解析方式
+    "skipLibCheck": true,  // 可选：跳过库类型检查（临时解决某些冲突）
     "jsx": "preserve",
     "importHelpers": true,
-    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,

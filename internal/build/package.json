@@ -16,7 +16,8 @@
   "devDependencies": {
     "@esbuild-kit/cjs-loader": "^2.4.4",
     "unbuild": "^3.5.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-macros": "3.0.0-beta.15"
   },
   "dependencies": {
     "@pnpm/find-workspace-packages": "^6.0.9",
@@ -34,7 +35,6 @@
     "gulp": "^5.0.0",
     "lodash": "^4.17.21",
     "rollup": "^4.40.0",
-    "rollup-plugin-esbuild": "^6.2.1",
-    "unplugin-vue-macros": "^2.14.5"
+    "rollup-plugin-esbuild": "^6.2.1"
   }
 }
