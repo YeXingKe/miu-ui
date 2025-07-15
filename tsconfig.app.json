@@ -32,6 +32,13 @@
     "noUncheckedSideEffectImports": true
   },
   // "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
-  "include":["packages/components/**/*"],
+  "include":[
+    "packages/components/**/*.json",    
+    "internal/**/*",
+    "internal/**/*.json",
+    "packages/theme-chalk/*",
+    "packages/miu-ui/version.ts",
+    "packages/miu-ui/package.json"
+  ],
   "exclude":["node_modules"],
 }

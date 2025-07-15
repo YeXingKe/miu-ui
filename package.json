@@ -22,17 +22,22 @@
     "vue": "^3.5.13"
   },
   "dependencies": {
+    "@miu-ui/components": "workspace:*",
+    "@miu-ui/theme-chalk": "workspace:*",
+    "@miu-ui/utils": "workspace:*",
     "@esbuild-kit/cjs-loader": "^2.4.4",
     "@pnpm/find-workspace-packages": "^6.0.9",
     "@pnpm/types": "^1000.6.0",
     "@types/gulp": "^4.0.17",
-    "element-plus": "^2.10.4",
     "rimraf": "^6.0.1",
+    "sass": "^1.89.2",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
+    "@miu-ui/build": "workspace:^0.0.1",
+    "@miu-ui/build-utils": "workspace:^0.0.1",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.15.2",
     "@vitejs/plugin-vue": "^5.2.1",

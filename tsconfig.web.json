@@ -3,11 +3,12 @@
     "compilerOptions": {
       "composite": true,
       "jsx": "preserve",
-      "lib": ["ES2018", "DOM", "DOM.Iterable"],
+      "lib": ["ES2019", "DOM", "DOM.Iterable"],
       "types": ["vue"],
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "resolveJsonModule": true, // 👈 允许 import JSON
     },
-    "include": ["packages", "typings/env.d.ts"],
+    "include": ["packages/components/choose-city/data/*.json", "typings/env.d.ts"],
     "exclude": [
       "node_modules",
       "**/dist",

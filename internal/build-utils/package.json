@@ -1,6 +1,6 @@
 {
-  "name": "build-utils",
-  "version": "1.0.0",
+  "name": "@miu-ui/build-utils",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {

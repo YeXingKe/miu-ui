@@ -12,29 +12,40 @@ import { generateExternal, withTaskName, writeBundles } from '../utils'
 import { ElementPlusAlias } from '../plugins/element-plus-alias'
 import { buildConfigEntries, target } from '../build-info'
 import type { TaskFunction } from 'gulp'
-import VueMacros from 'vue-macros/rollup'
+import json from '@rollup/plugin-json'
 
 import type { OutputOptions, Plugin } from 'rollup'
 
 const plugins = [
   ElementPlusAlias(),
   // 为 Vue 3 提供一些尚未稳定的实验性功能，这些功能可以让开发者提前体验 Vue 的未来特性
-  VueMacros({
-    setupComponent: false, // 提供了一种更简洁的语法来定义组件，支持在函数式组件中使用 <script setup>
-    setupSFC: false,
-    plugins: {
-      vue: vue({
-        isProduction: true,
-        template: {
-          compilerOptions: {
-            hoistStatic: false,
-            cacheHandlers: false
-          }
-        }
-      })
-      // vueJsx: vueJsx()
-    }
+  // VueMacros({
+  //   setupComponent: false, // 提供了一种更简洁的语法来定义组件，支持在函数式组件中使用 <script setup>
+  //   setupSFC: false,
+  //   plugins: {
+  //     vue: vue({
+  //       isProduction: true,
+  //       template: {
+  //         compilerOptions: {
+  //           hoistStatic: false,
+  //           cacheHandlers: false
+  //         }
+  //       }
+  //     })
+  //     // vueJsx: vueJsx()
+  //   }
+  // }),
+  json({
+    // 只处理指定目录
+    // include: 'packages/**/*.json',
+    // 排除 node_modules
+    exclude: 'node_modules/**',
+    // 是否把解析结果转成具名导出
+    preferConst: true,
+    // 强制压缩为 default 导出
+    compact: true
   }),
+  vue(),
   // 解析 node_modules 中的模块路径，帮助 Rollup 找到和解析 Node.js 风格的模块路径
   nodeResolve({
     extensions: ['.mjs', '.js', '.json', '.ts'] // 支持的文件扩展名
@@ -84,6 +95,7 @@ async function buildModulesComponents() {
 }
 
 async function buildModulesStyles() {
+  // pkgRoot（通常是 packages 目录）下 递归查找所有组件的样式入口
   const input = excludeFiles(
     await glob('**/style/(index|css).{js,ts,vue}', {
       cwd: pkgRoot,
@@ -112,5 +124,4 @@ async function buildModulesStyles() {
     })
   )
 }
-
 export const buildModules: TaskFunction = series(withTaskName('buildModulesComponents', buildModulesComponents), withTaskName('buildModulesStyles', buildModulesStyles))

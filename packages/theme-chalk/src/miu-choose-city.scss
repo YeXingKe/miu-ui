@@ -1,0 +1,57 @@
+.result {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .rotate {
+    transform: rotate(180deg);
+  }
+  
+  svg {
+    width: 1em;
+    height: 1em;
+    position: relative;
+    top: 2px;
+    margin-left: 4px;
+    transition: all 0.25s linear;
+  }
+  
+  .container {
+    padding: 6px;
+  }
+  
+  .commonFlex {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .city,
+  .province {
+    @extend .commonFlex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  
+    .province-item,
+    .city-item {
+      padding: 3px 6px;
+      margin-right: 8px;
+      border: 1px solid #eee;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+  }
+  
+  .city-name,
+  .province-name {
+    @extend .commonFlex;
+  
+    .city-name-item,
+    .province-name-item {
+      margin-right: 6px;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+  }

@@ -1,25 +1,27 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "target": "es2018",
+    "target": "es2019",
     "module": "esnext",
     "baseUrl": ".",
     "sourceMap": false,
+    "noImplicitAny": false, // 关闭隐式 any 报错
     "moduleResolution": "node",
     "allowJs": false,
     "strict": true,
     "noUnusedLocals": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": true, // 👈 允许 import JSON
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "removeComments": false,
     "rootDir": ".",
-    "types": [],
+    "types": ["node"],
     "paths": {
       "@miu-ui/components": ["packages/components"],
       "@miu-ui/utils": ["packages/utils"],
-      "miu-ui": ["packages/miu-ui"]
+      "miu-ui": ["packages/miu-ui"],
+      "@miu-ui/build-utils": ["internal/build-utils"],
     },
     "preserveSymlinks": true
-  }
+  },
 }
