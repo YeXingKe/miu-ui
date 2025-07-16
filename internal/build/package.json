@@ -20,6 +20,7 @@
     "vue-macros": "3.0.0-beta.15"
   },
   "dependencies": {
+    "@microsoft/api-extractor": "^7.52.8",
     "@miu-ui/build-constants": "workspace:*",
     "@pnpm/find-workspace-packages": "^6.0.9",
     "@pnpm/types": "^1000.6.0",

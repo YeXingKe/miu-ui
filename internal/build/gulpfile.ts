@@ -2,7 +2,7 @@ import path from 'path'
 import { copyFile, mkdir } from 'fs/promises'
 import { copy } from 'fs-extra'
 import { parallel, series } from 'gulp'
-import { buildOutput, epOutput, epPackage, projRoot } from '../build-utils/src'
+import { buildOutput, epOutput, epPackage, projRoot } from '@miu-ui/build-utils'
 import { buildConfig, run, runTask, withTaskName } from './src'
 import type { TaskFunction } from 'gulp'
 import type { Module } from './src'
@@ -37,7 +37,7 @@ export default series(
   parallel(
     runTask('buildModules'), // pnpm run start buildModules等同于gulp --require ./node_modules/@esbuild-kit/cjs-loader -f gulpfile.ts "buildModules"
     runTask('buildFullBundle'),
-    // runTask('generateTypesDefinitions'),
+    runTask('generateTypesDefinitions'),
     runTask('buildHelper'),
     series(
       // withTaskName('buildThemeChalk', () =>
