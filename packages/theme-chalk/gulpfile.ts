@@ -72,9 +72,14 @@ function buildThemeChalk() {
   const sass = gulpSass(dartSass) // 用 Dart-Sass 作为 Sass 编译引擎。
   const noElPrefixFile = /(index|base|display)/ // 	正则：匹配到 index.scss、base.scss、display.scss 时不加 el- 前缀。
   return src(path.resolve(__dirname, 'src/*.scss'))
-    .pipe(sass.sync()) // 同步编译 Sass → CSS。
+    .pipe(sass.sync())
+    .on('error', sass.logError) // 捕获 Sass 错误 // 同步编译 Sass → CSS。
     .pipe(autoprefixer({ cascade: false })) // 自动补全浏览器前缀，去掉级联缩进
-    .pipe(compressWithCssnano()) // 	调用前面定义的 compressWithCssnano() 流，进行 cssnano 压缩并输出体积信息。
+    .pipe(compressWithCssnano())
+    .on('error', err => {
+      console.error('CSS压缩失败:', err)
+      process.exit(1) // 主动退出进程
+    }) // 	调用前面定义的 compressWithCssnano() 流，进行 cssnano 压缩并输出体积信息。
     .pipe(
       rename(path => {
         if (!noElPrefixFile.test(path.basename)) {

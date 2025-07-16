@@ -64,7 +64,14 @@ async function buildModulesComponents() {
     input,
     plugins,
     external: await generateExternal({ full: false }), // 动态生成外部依赖
-    treeshake: { moduleSideEffects: false } // // 配置树摇优化
+    treeshake: { moduleSideEffects: false }, // // 配置树摇优化
+    onwarn(warning, warn) {
+      // 去掉vue-runtime的警告
+      if (warning.code === 'UNUSED_EXTERNAL_IMPORT' || warning.message.includes('#__NO_SIDE_EFFECTS__')) {
+        return // 跳过这些警告
+      }
+      warn(warning) // 其他警告正常显示
+    }
   })
 
   await writeBundles(

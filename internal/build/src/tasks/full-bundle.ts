@@ -35,6 +35,8 @@ async function buildFullEntry(minify: boolean) {
     // }),
     vue(),
     nodeResolve({
+      // 忽略 Vue 的 sourcemap
+      preferBuiltins: false,
       extensions: ['.mjs', '.js', '.json', '.ts']
     }),
     commonjs(),
@@ -68,7 +70,14 @@ async function buildFullEntry(minify: boolean) {
     input: path.resolve(epRoot, 'index.ts'),
     plugins,
     external: await generateExternal({ full: true }),
-    treeshake: true
+    treeshake: true,
+    onwarn(warning, warn) {
+      // 去掉vue-runtime的警告
+      if (warning.code === 'UNUSED_EXTERNAL_IMPORT' || warning.message.includes('#__NO_SIDE_EFFECTS__')) {
+        return // 跳过这些警告
+      }
+      warn(warning) // 其他警告正常显示
+    }
   })
   await writeBundles(bundle, [
     {

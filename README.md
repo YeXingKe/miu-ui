@@ -9,3 +9,10 @@ Learn more about the recommended Project Setup and IDE Support in the [Vue Docs 
 pnpm i -w <package-name>
 在目录上执行查询调试路径
 node -e "console.log(require.resolve('@miu-ui/build-utils'))"
+
+## 调试方式
+
+```
+1、先定位问题出现区域，然后根据需要以行为参考注释掉调试
+2、页面空白，控制台没报错，应该某个值判断没通过，直接出问题前后打印值
+```
