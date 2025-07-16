@@ -2,15 +2,25 @@
   "name": "@miu-ui/build-utils",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "unbuild"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@pnpm/find-workspace-packages": "^6.0.9",
+    "@pnpm/types": "^1000.6.0",
     "consola": "^3.4.2"
   },
   "devDependencies": {

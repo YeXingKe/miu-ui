@@ -8,7 +8,7 @@ import {
   isUnionType,
   main
 } from 'components-helper'
-import { epOutput, epPackage, getPackageManifest, projRoot } from '../../../build-utils/src'
+import { epOutput, epPackage, getPackageManifest, projRoot } from '@miu-ui/build-utils'
 
 import type { TaskFunction } from 'gulp'
 import type {
@@ -88,10 +88,10 @@ const reAttribute: ReAttribute = (value, key) => {
   } else if (key === 'Subtags') {
     return str
       ? `el-${str
-          .replaceAll(/\s*\/\s*/g, '/el-')
-          .replaceAll(/\B([A-Z])/g, '-$1')
-          .replaceAll(/\s+/g, '-')
-          .toLowerCase()}`
+        .replaceAll(/\s*\/\s*/g, '/el-')
+        .replaceAll(/\B([A-Z])/g, '-$1')
+        .replaceAll(/\s+/g, '-')
+        .toLowerCase()}`
       : undefined
   } else {
     return str

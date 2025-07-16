@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vite",
     "build": "pnpm run -C internal/build start",
+    "build:theme": "pnpm run -C packages/theme-chalk build",
     "preview": "vite preview",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
@@ -22,13 +23,14 @@
     "vue": "^3.5.13"
   },
   "dependencies": {
+    "@esbuild-kit/cjs-loader": "^2.4.4",
     "@miu-ui/components": "workspace:*",
     "@miu-ui/theme-chalk": "workspace:*",
     "@miu-ui/utils": "workspace:*",
-    "@esbuild-kit/cjs-loader": "^2.4.4",
     "@pnpm/find-workspace-packages": "^6.0.9",
     "@pnpm/types": "^1000.6.0",
     "@types/gulp": "^4.0.17",
+    "element-plus": "^2.10.4",
     "rimraf": "^6.0.1",
     "sass": "^1.89.2",
     "vue": "^3.5.13"

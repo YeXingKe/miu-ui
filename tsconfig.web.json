@@ -8,7 +8,7 @@
       "skipLibCheck": true,
       "resolveJsonModule": true, // 👈 允许 import JSON
     },
-    "include": ["packages/components/choose-city/data/*.json", "typings/env.d.ts"],
+    "include": ["packages/*", "typings/env.d.ts"],
     "exclude": [
       "node_modules",
       "**/dist",

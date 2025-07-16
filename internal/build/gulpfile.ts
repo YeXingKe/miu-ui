@@ -37,7 +37,7 @@ export default series(
   parallel(
     runTask('buildModules'), // pnpm run start buildModules等同于gulp --require ./node_modules/@esbuild-kit/cjs-loader -f gulpfile.ts "buildModules"
     runTask('buildFullBundle'),
-    runTask('generateTypesDefinitions'),
+    // runTask('generateTypesDefinitions'),
     runTask('buildHelper'),
     series(
       // withTaskName('buildThemeChalk', () =>

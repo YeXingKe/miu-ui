@@ -18,9 +18,10 @@
     "types": ["node"],
     "paths": {
       "@miu-ui/components": ["packages/components"],
+      "@miu-ui/components/*": ["packages/components/*"],
       "@miu-ui/utils": ["packages/utils"],
+      "@miu-ui/utils/*": ["packages/utils/*"],
       "miu-ui": ["packages/miu-ui"],
-      "@miu-ui/build-utils": ["internal/build-utils"],
     },
     "preserveSymlinks": true
   },
