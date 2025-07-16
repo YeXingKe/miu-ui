@@ -201,10 +201,13 @@ importers:
   packages/miu-ui: {}
 
   packages/theme-chalk:
-    dependencies:
+    devDependencies:
       '@esbuild-kit/cjs-loader':
         specifier: ^2.4.4
         version: 2.4.4
+      '@miu-ui/build':
+        specifier: workspace:*
+        version: link:../../internal/build
       '@types/gulp-autoprefixer':
         specifier: ^0.0.37
         version: 0.0.37

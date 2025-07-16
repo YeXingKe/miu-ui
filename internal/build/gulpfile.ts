@@ -17,6 +17,7 @@ export const copyFiles = () =>
 
 export const copyTypesDefinitions: TaskFunction = done => {
   const src = path.resolve(buildOutput, 'types', 'packages')
+  // console.log(require.resolve(buildOutput + '/types/packages'), '---------------src')
   // 复制src文件夹放到的打包对应的文件夹内
   const copyTypes = (module: Module) => withTaskName(`copyTypes:${module}`, () => copy(src, buildConfig[module].output.path, { recursive: true }))
   // 并行执行两个复制任务
@@ -25,7 +26,7 @@ export const copyTypesDefinitions: TaskFunction = done => {
 
 export const copyFullStyle = async () => {
   await mkdir(path.resolve(epOutput, 'dist'), { recursive: true })
-  // await copyFile(path.resolve(epOutput, 'theme-chalk/index.css'), path.resolve(epOutput, 'dist/index.css'))
+  await copyFile(path.resolve(epOutput, 'theme-chalk/index.css'), path.resolve(epOutput, 'dist/index.css'))
 }
 
 // buildModules 是 gulpfile.ts 中定义的一个任务
@@ -40,13 +41,10 @@ export default series(
     runTask('generateTypesDefinitions'),
     runTask('buildHelper'),
     series(
-      // withTaskName('buildThemeChalk', () =>
-      //   run('pnpm run -C packages/theme-chalk build')
-      // ),
+      withTaskName('buildThemeChalk', () => run('pnpm run -C packages/theme-chalk build')),
       copyFullStyle
     )
   ),
-
   parallel(copyTypesDefinitions, copyFiles)
 )
 

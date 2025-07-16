@@ -71,7 +71,7 @@
 import { ref, onMounted } from 'vue'
 import city from '../data/city'
 import type { City } from './types'
-import province from '../data/province.json'
+import province from '../data/province'
 
 defineOptions({
   name: 'MiuChooseCity'

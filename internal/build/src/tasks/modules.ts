@@ -12,7 +12,6 @@ import { generateExternal, withTaskName, writeBundles } from '../utils'
 import { ElementPlusAlias } from '../plugins/element-plus-alias'
 import { buildConfigEntries, target } from '../build-info'
 import type { TaskFunction } from 'gulp'
-import json from '@rollup/plugin-json'
 
 import type { OutputOptions, Plugin } from 'rollup'
 
@@ -35,16 +34,6 @@ const plugins = [
   //     // vueJsx: vueJsx()
   //   }
   // }),
-  json({
-    // 只处理指定目录
-    // include: 'packages/**/*.json',
-    // 排除 node_modules
-    exclude: 'node_modules/**',
-    // 是否把解析结果转成具名导出
-    preferConst: true,
-    // 强制压缩为 default 导出
-    compact: true
-  }),
   vue(),
   // 解析 node_modules 中的模块路径，帮助 Rollup 找到和解析 Node.js 风格的模块路径
   nodeResolve({

@@ -17,7 +17,6 @@ import { ElementPlusAlias } from '../plugins/element-plus-alias'
 import { formatBundleFilename, generateExternal, withTaskName, writeBundles } from '../utils'
 import { target } from '../build-info'
 import type { TaskFunction } from 'gulp'
-import json from '@rollup/plugin-json'
 
 const banner = `/*! ${PKG_BRAND_NAME} v0.0.1 */\n`
 
@@ -35,16 +34,6 @@ async function buildFullEntry(minify: boolean) {
     //   }
     // }),
     vue(),
-    json({
-      // 只处理指定目录
-      // include: 'packages/**/*.json',
-      // 排除 node_modules
-      exclude: 'node_modules/**',
-      // 是否把解析结果转成具名导出
-      preferConst: true,
-      // 强制压缩为 default 导出
-      compact: true
-    }),
     nodeResolve({
       extensions: ['.mjs', '.js', '.json', '.ts']
     }),

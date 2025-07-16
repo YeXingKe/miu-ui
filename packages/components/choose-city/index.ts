@@ -1,11 +1,11 @@
 import { withInstall } from '@miu-ui/utils'
-import MiuChooseCity from './src/index.vue'
+import ChooseCity from './src/index.vue'
 import type { SFCWithInstall } from '@miu-ui/utils'
 
-export const ElButton: SFCWithInstall<typeof MiuChooseCity> = withInstall(MiuChooseCity)
+export const MiuChooseCity: SFCWithInstall<typeof ChooseCity> = withInstall(ChooseCity)
 
 export default MiuChooseCity
 
-// export * from './src/button'
+// export * from './src'
 // export * from './src/constants'
 // export type { ButtonInstance, ButtonGroupInstance } from './src/instance'

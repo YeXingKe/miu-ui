@@ -4,13 +4,14 @@
       "composite": true,
       "jsx": "preserve",
       "lib": ["ES2019", "DOM", "DOM.Iterable"],
-      "types": ["vue"],
+      "types": [],
       "skipLibCheck": true,
       "resolveJsonModule": true, // 👈 允许 import JSON
     },
-    "include": ["packages/*", "typings/env.d.ts"],
+    "include": ["packages", "typings/env.d.ts"],
     "exclude": [
       "node_modules",
+      "node_modules/**/*.ts",
       "**/dist",
       "**/__tests__/**/*",
       "**/gulpfile.ts",

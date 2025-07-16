@@ -13,11 +13,12 @@
   "jsdelivr": "index.css",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "gulp --require @esbuild-kit/cjs-loader"
+    "build": "gulp --require ./node_modules/@esbuild-kit/cjs-loader"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
+    "@miu-ui/build": "workspace:*",
     "@esbuild-kit/cjs-loader": "^2.4.4",
     "@types/gulp-autoprefixer": "^0.0.37",
     "@types/gulp-rename": "^2.0.6",

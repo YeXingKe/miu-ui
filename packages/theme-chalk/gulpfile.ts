@@ -113,6 +113,6 @@ export function copyThemeChalkSource() {
   return src(path.resolve(__dirname, 'src/**')).pipe(dest(path.resolve(distBundle, 'src')))
 }
 
-export const build: TaskFunction = parallel(copyThemeChalkSource, series(buildThemeChalk, buildDarkCssVars, copyThemeChalkBundle))
+export const build: TaskFunction = parallel(copyThemeChalkSource, series(buildThemeChalk, copyThemeChalkBundle))
 
 export default build
