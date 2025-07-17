@@ -82,12 +82,15 @@ let result = ref<string>('请选择') // 最终选择的结果
 let visible = ref<boolean>(false) // 控制弹出层的显示
 let radioValue = ref<string>('按城市') // 单选框的值
 // let selectValue = ref<string>('') // 下拉框的值显示城市的数据
-let props = defineProps({
-  selectedValue: {
-    type: String,
-    default: ''
-  }
-})
+const props = withDefaults(
+  defineProps<{
+    /**
+     * selected the value
+     */
+    selectedValue?: string
+  }>(),
+  { selectedValue: '' }
+)
 const selectedValue = ref(props.selectedValue)
 let options = ref<City[]>([]) //下拉框显示城市的数据
 let cities = ref(city.cities) // 所有城市数据

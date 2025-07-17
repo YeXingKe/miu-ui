@@ -16,3 +16,7 @@ node -e "console.log(require.resolve('@miu-ui/build-utils'))"
 1、先定位问题出现区域，然后根据需要以行为参考注释掉调试
 2、页面空白，控制台没报错，应该某个值判断没通过，直接出问题前后打印值
 ```
+
+pnpm i -D @storybook/addon-essentials@latest @storybook/addon-interactions@latest @storybook/addon-styling@latest @storybook/testing-library@latest @storybook/theming@latest @storybook/types@latest
+
+pnpm remove @storybook/addon-essentials @storybook/addon-interactions @storybook/addon-styling @storybook/testing-library @storybook/theming @storybook/types
