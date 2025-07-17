@@ -22,6 +22,7 @@
       "@miu-ui/utils": ["packages/utils"],
       "@miu-ui/utils/*": ["packages/utils/*"],
       "miu-ui": ["packages/miu-ui"],
+      "~/":["packages/components/*"]
     },
     "preserveSymlinks": true
   },

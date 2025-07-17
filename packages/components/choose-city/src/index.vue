@@ -4,7 +4,7 @@
       <div class="result">
         <div>{{ result }}</div>
         <div>
-          <el-icon-arrowdown :class="{ rotate: visible }"> </el-icon-arrowdown>
+          <ArrowDown :class="{ rotate: visible }"> </ArrowDown>
         </div>
       </div>
     </template>
@@ -68,6 +68,7 @@
   </el-popover>
 </template>
 <script setup lang="ts">
+import { ArrowDown } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import city from '../data/city'
 import type { City } from './types'
