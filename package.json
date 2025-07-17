@@ -26,6 +26,7 @@
     "vue": "^3.5.13"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
     "@miu-ui/components": "workspace:*",
     "@miu-ui/theme-chalk": "workspace:*",
     "@miu-ui/utils": "workspace:*",
@@ -47,6 +48,7 @@
     "@storybook/addon-essentials": "^8.6.14",
     "@storybook/addon-interactions": "^8.6.14",
     "@storybook/addon-onboarding": "^9.0.17",
+    "@storybook/addon-styling": "^1.3.7",
     "@storybook/addon-vitest": "^9.0.17",
     "@storybook/builder-vite": "^9.0.17",
     "@storybook/testing-library": "^0.2.2",
