@@ -13,11 +13,11 @@
     "build:util": "pnpm run -C internal/build-utils build",
     "build:constant": "pnpm run -C internal/build-constants build",
     "preview": "vite preview",
-    "docs:dev": "vitepress dev",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
     "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
-    "clean:dist": "rimraf dist"
+    "clean:dist": "rimraf dist",
+    "prepare": "husky install",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "engines": {
     "node": ">= 18"
@@ -26,35 +26,62 @@
     "vue": "^3.5.13"
   },
   "dependencies": {
-    "@esbuild-kit/cjs-loader": "^2.4.4",
     "@miu-ui/components": "workspace:*",
     "@miu-ui/theme-chalk": "workspace:*",
     "@miu-ui/utils": "workspace:*",
-    "@pnpm/find-workspace-packages": "^6.0.9",
-    "@pnpm/types": "^1000.6.0",
-    "@types/gulp": "^4.0.17",
     "element-plus": "^2.10.4",
     "rimraf": "^6.0.1",
     "sass": "^1.89.2",
     "vue": "^3.5.13"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^4.0.1",
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
+    "@esbuild-kit/cjs-loader": "^2.4.4",
     "@miu-ui/build": "workspace:^0.0.1",
     "@miu-ui/build-utils": "workspace:^0.0.1",
+    "@pnpm/find-workspace-packages": "^6.0.9",
+    "@pnpm/types": "^1000.6.0",
+    "@storybook/addon-a11y": "^9.0.17",
+    "@storybook/addon-essentials": "^8.6.14",
+    "@storybook/addon-interactions": "^8.6.14",
+    "@storybook/addon-onboarding": "^9.0.17",
+    "@storybook/addon-vitest": "^9.0.17",
+    "@storybook/builder-vite": "^9.0.17",
+    "@storybook/testing-library": "^0.2.2",
+    "@storybook/theming": "^8.6.14",
+    "@storybook/types": "^8.6.14",
+    "@storybook/vue3": "^9.0.17",
+    "@storybook/vue3-vite": "^9.0.17",
     "@types/fs-extra": "^11.0.4",
+    "@types/gulp": "^4.0.17",
     "@types/node": "^22.15.2",
     "@vitejs/plugin-vue": "^5.2.1",
+    "@vitest/browser": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
     "@vue/tsconfig": "^0.7.0",
+    "eslint-plugin-storybook": "9.0.17",
+    "husky": "^9.1.7",
+    "playwright": "^1.54.1",
     "prettier": "^3.5.1",
+    "storybook": "^9.0.17",
     "typescript": "~5.7.2",
     "unplugin-auto-import": "^19.1.0",
     "unplugin-vue-components": "^28.1.0",
     "vite": "^6.1.0",
+    "vitest": "^3.2.4",
     "vue-tsc": "^2.2.0"
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "lint-staged": {
-    "*.{vue,js,ts,jsx,tsx,md,json}": "eslint --fix"
+    "*.{vue,js,ts,jsx,tsx,md,json}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

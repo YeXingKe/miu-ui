@@ -13,7 +13,7 @@ module.exports = {
   },
   parser: 'vue-eslint-parser',
   // 用于继承已有的规则配置
-  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
+  extends: ['eslint:recommended', 'plugin:vue/vue3-recommended', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'plugin:storybook/recommended'],
   plugins: ['vue', '@typescript-eslint'],
   // 用于指定自定义规则
   rules: {
