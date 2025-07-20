@@ -4,7 +4,6 @@ import { rollup } from 'rollup'
 import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import vue from '@vitejs/plugin-vue'
-// import VueMacros from 'vue-macros/rollup'
 // import vueJsx from '@vitejs/plugin-vue-jsx'
 import esbuild, { minify as minifyPlugin } from 'rollup-plugin-esbuild'
 import { parallel } from 'gulp'
@@ -12,6 +11,7 @@ import glob from 'fast-glob'
 import { camelCase, upperFirst } from 'lodash-unified'
 import { PKG_BRAND_NAME, PKG_CAMELCASE_LOCAL_NAME, PKG_CAMELCASE_NAME } from '@miu-ui/build-constants'
 import { epOutput, epRoot, localeRoot } from '@miu-ui/build-utils'
+// import VueMacros from 'unplugin-vue-macros/rollup'
 // import { version } from '../../../../packages/element-plus/version'
 import { ElementPlusAlias } from '../plugins/element-plus-alias'
 import { formatBundleFilename, generateExternal, withTaskName, writeBundles } from '../utils'
@@ -27,16 +27,16 @@ async function buildFullEntry(minify: boolean) {
     //   setupComponent: false,
     //   setupSFC: false,
     //   plugins: {
-    //     vue: vue({
-    //       isProduction: false
-    //     })
-    //     // vueJsx: vueJsx()
+    //     // vue: vue({
+    //     //   isProduction: false
+    //     // })
+    //     vueJsx: vueJsx()
     //   }
     // }),
     vue(),
     nodeResolve({
       // 忽略 Vue 的 sourcemap
-      preferBuiltins: false,
+      // preferBuiltins: false,
       extensions: ['.mjs', '.js', '.json', '.ts']
     }),
     commonjs(),
@@ -67,6 +67,7 @@ async function buildFullEntry(minify: boolean) {
   }
 
   const bundle = await rollup({
+    // // miu-ui/packages/miu-ui
     input: path.resolve(epRoot, 'index.ts'),
     plugins,
     external: await generateExternal({ full: true }),

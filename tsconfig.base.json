@@ -18,9 +18,7 @@
     "types": ["node"],
     "paths": {
       "@miu-ui/components": ["packages/components"],
-      "@miu-ui/components/*": ["packages/components/*"],
       "@miu-ui/utils": ["packages/utils"],
-      "@miu-ui/utils/*": ["packages/utils/*"],
       "miu-ui": ["packages/miu-ui"],
       "~/":["packages/components/*"]
     },

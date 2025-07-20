@@ -1,4 +1,4 @@
-import { PKG_NAME, PKG_PREFIX } from '../../../build-constants/src'
+import { PKG_NAME, PKG_PREFIX } from '@miu-ui/build-constants'
 
 import type { Plugin } from 'rollup'
 

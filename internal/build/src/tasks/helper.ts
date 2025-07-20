@@ -1,23 +1,10 @@
 import path from 'path'
 import os from 'os'
-import {
-  arrayToRegExp,
-  getTypeSymbol,
-  hyphenate,
-  isCommonType,
-  isUnionType,
-  main
-} from 'components-helper'
+import { arrayToRegExp, getTypeSymbol, hyphenate, isCommonType, isUnionType, main } from 'components-helper'
 import { epOutput, epPackage, getPackageManifest, projRoot } from '@miu-ui/build-utils'
 
 import type { TaskFunction } from 'gulp'
-import type {
-  ReAttribute,
-  ReComponentName,
-  ReDocUrl,
-  ReWebTypesSource,
-  ReWebTypesType
-} from 'components-helper'
+import type { ReAttribute, ReComponentName, ReDocUrl, ReWebTypesSource, ReWebTypesType } from 'components-helper'
 
 const typeMap = {
   vue: ['Component', 'VNode', 'CSSProperties', 'StyleValue']
@@ -28,7 +15,7 @@ const removeTag = (str: string) => {
 }
 
 const reComponentName: ReComponentName = title => {
-  return `el-${hyphenate(removeTag(title)).replace(/[ ]+/g, '-')}`
+  return `Miu-${hyphenate(removeTag(title)).replace(/[ ]+/g, '-')}`
 }
 
 const reDocUrl: ReDocUrl = (fileName, header) => {
@@ -39,7 +26,7 @@ const reDocUrl: ReDocUrl = (fileName, header) => {
 }
 
 const reWebTypesSource: ReWebTypesSource = title => {
-  const symbol = `El${removeTag(title)
+  const symbol = `Miu${removeTag(title)
     .replaceAll(/-/g, ' ')
     .replaceAll(/^\w|\s+\w/g, item => {
       return item.trim().toUpperCase()
@@ -82,16 +69,14 @@ const reAttribute: ReAttribute = (value, key) => {
       .replaceAll(/\|\s*(\b\w+)/g, '/ $1')
       .replaceAll(/=_0!/g, '|')
   } else if (key === 'Accepted Values') {
-    return /\[.+\]\(.+\)/.test(str) || /^\*$/.test(str)
-      ? undefined
-      : str.replaceAll(/`/g, '').replaceAll(/\([^)]*\)(?!\s*=>)/g, '')
+    return /\[.+\]\(.+\)/.test(str) || /^\*$/.test(str) ? undefined : str.replaceAll(/`/g, '').replaceAll(/\([^)]*\)(?!\s*=>)/g, '')
   } else if (key === 'Subtags') {
     return str
       ? `el-${str
-        .replaceAll(/\s*\/\s*/g, '/el-')
-        .replaceAll(/\B([A-Z])/g, '-$1')
-        .replaceAll(/\s+/g, '-')
-        .toLowerCase()}`
+          .replaceAll(/\s*\/\s*/g, '/el-')
+          .replaceAll(/\B([A-Z])/g, '-$1')
+          .replaceAll(/\s+/g, '-')
+          .toLowerCase()}`
       : undefined
   } else {
     return str
@@ -105,9 +90,7 @@ const reWebTypesType: ReWebTypesType = type => {
   const isUnion = isUnionType(symbol)
   const module = findModule(symbol)
 
-  return isPublicType || isNumber || !symbol || isUnion
-    ? type
-    : { name: type, source: { symbol, module } }
+  return isPublicType || isNumber || !symbol || isUnion ? type : { name: type, source: { symbol, module } }
 }
 
 const findModule = (type: string): string | undefined => {
@@ -187,10 +170,7 @@ export const buildHelper: TaskFunction = done => {
 
   const tagVer = process.env.TAG_VERSION
   const _version = tagVer ? (tagVer.startsWith('v') ? tagVer.slice(1) : tagVer) : version!
-  let entry = `${path.resolve(
-    projRoot,
-    'docs/en-US/component'
-  )}/!(datetime-picker|message-box|message).md`
+  let entry = `${path.resolve(projRoot, 'docs/en-US/component')}/!(datetime-picker|message-box|message).md`
   if (os.platform() === 'win32') {
     entry = entry.replace(/\\/g, '/')
   }
@@ -207,8 +187,7 @@ export const buildHelper: TaskFunction = done => {
     reWebTypesType,
     props: 'Attributes',
     propsOptions: 'Accepted Values',
-    tableRegExp:
-      /#+\s+(.*\s*Attributes|.*\s*Events|.*\s*Slots|.*\s*Directives)\s*\n+(\|?.+\|.+)\n\|?\s*:?-+:?\s*\|.+((\n\|?.+\|.+)+)/g
+    tableRegExp: /#+\s+(.*\s*Attributes|.*\s*Events|.*\s*Slots|.*\s*Directives)\s*\n+(\|?.+\|.+)\n\|?\s*:?-+:?\s*\|.+((\n\|?.+\|.+)+)/g
   })
 
   done()

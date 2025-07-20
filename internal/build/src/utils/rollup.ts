@@ -1,4 +1,4 @@
-import { epPackage, getPackageDependencies } from '../../../build-utils/src'
+import { epPackage, getPackageDependencies } from '@miu-ui/build-utils'
 
 import type { OutputOptions, RollupBuild } from 'rollup'
 

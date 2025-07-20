@@ -17,7 +17,6 @@ export const copyFiles = () =>
 
 export const copyTypesDefinitions: TaskFunction = done => {
   const src = path.resolve(buildOutput, 'types', 'packages')
-  // console.log(require.resolve(buildOutput + '/types/packages'), '---------------src')
   // 复制src文件夹放到的打包对应的文件夹内
   const copyTypes = (module: Module) => withTaskName(`copyTypes:${module}`, () => copy(src, buildConfig[module].output.path, { recursive: true }))
   // 并行执行两个复制任务

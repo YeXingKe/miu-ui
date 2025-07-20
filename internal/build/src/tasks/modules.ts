@@ -2,7 +2,7 @@ import path from 'path'
 import { series } from 'gulp'
 import { rollup } from 'rollup'
 import vue from '@vitejs/plugin-vue'
-// import vueJsx from '@vitejs/plugin-vue-jsx'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import esbuild from 'rollup-plugin-esbuild'
@@ -12,7 +12,7 @@ import { generateExternal, withTaskName, writeBundles } from '../utils'
 import { ElementPlusAlias } from '../plugins/element-plus-alias'
 import { buildConfigEntries, target } from '../build-info'
 import type { TaskFunction } from 'gulp'
-
+// import VueMacros from 'unplugin-vue-macros/rollup'
 import type { OutputOptions, Plugin } from 'rollup'
 
 const plugins = [
@@ -22,16 +22,16 @@ const plugins = [
   //   setupComponent: false, // 提供了一种更简洁的语法来定义组件，支持在函数式组件中使用 <script setup>
   //   setupSFC: false,
   //   plugins: {
-  //     vue: vue({
-  //       isProduction: true,
-  //       template: {
-  //         compilerOptions: {
-  //           hoistStatic: false,
-  //           cacheHandlers: false
-  //         }
-  //       }
-  //     })
-  //     // vueJsx: vueJsx()
+  //     // vue: vue({
+  //     //   isProduction: true,
+  //     //   template: {
+  //     //     compilerOptions: {
+  //     //       hoistStatic: false,
+  //     //       cacheHandlers: false
+  //     //     }
+  //     //   }
+  //     // })
+  //     vueJsx: vueJsx()
   //   }
   // }),
   vue(),
@@ -79,7 +79,7 @@ async function buildModulesComponents() {
     buildConfigEntries.map(([module, config]): OutputOptions => {
       return {
         format: config.format,
-        dir: config.output.path,
+        dir: config.output.path, // 多入口，file：单入口
         exports: module === 'cjs' ? 'named' : undefined,
         preserveModules: true,
         preserveModulesRoot: epRoot,

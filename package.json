@@ -71,6 +71,7 @@
     "typescript": "~5.7.2",
     "unplugin-auto-import": "^19.1.0",
     "unplugin-vue-components": "^28.1.0",
+    "unplugin-vue-macros": "^2.14.5",
     "vite": "^6.1.0",
     "vitest": "^3.2.4",
     "vue-tsc": "^2.2.0"
