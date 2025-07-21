@@ -9,7 +9,7 @@
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
-import { SelectOptions } from './types'
+import { SelectOptions } from './select'
 
 // interface FetchSelectProps {
 //   apiFun: () => Promise<any[]>

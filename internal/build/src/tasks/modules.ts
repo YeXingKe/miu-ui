@@ -7,7 +7,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import esbuild from 'rollup-plugin-esbuild'
 import glob from 'fast-glob'
-import { epRoot, excludeFiles, pkgRoot } from '@miu-ui/build-utils'
+import { epRoot, excludeFiles, pkgRoot, compRoot } from '@miu-ui/build-utils'
 import { generateExternal, withTaskName, writeBundles } from '../utils'
 import { ElementPlusAlias } from '../plugins/element-plus-alias'
 import { buildConfigEntries, target } from '../build-info'
@@ -52,14 +52,16 @@ const plugins = [
 ]
 
 async function buildModulesComponents() {
+  console.log(pkgRoot, '-----input')
   const input = excludeFiles(
     // 一个高性能的文件路径匹配库
     await glob(['**/*.{js,ts,vue}', '!**/style/(index|css).{js,ts,vue}'], {
-      cwd: pkgRoot,
+      cwd: pkgRoot, // // miu-ui/packages
       absolute: true,
       onlyFiles: true // 是否只返回文件路径，忽略目录路径
     })
   )
+  console.log(input, '------input')
   const bundle = await rollup({
     input,
     plugins,
@@ -77,12 +79,13 @@ async function buildModulesComponents() {
   await writeBundles(
     bundle,
     buildConfigEntries.map(([module, config]): OutputOptions => {
+      // console.log(config.output.path, epRoot, '-------123')
       return {
         format: config.format,
-        dir: config.output.path, // 多入口，file：单入口
+        dir: config.output.path, // 多入口，file：单入口 /dist/miu-ui/lib
         exports: module === 'cjs' ? 'named' : undefined,
         preserveModules: true,
-        preserveModulesRoot: epRoot,
+        preserveModulesRoot: epRoot, // miu-ui/packages/miu-ui
         sourcemap: true,
         entryFileNames: `[name].${config.ext}`
       }

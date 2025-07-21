@@ -71,7 +71,7 @@
 import { ArrowDown } from '@element-plus/icons-vue'
 import { ref, onMounted } from 'vue'
 import city from '../data/city'
-import type { City } from './types'
+import type { City } from './choose-city'
 import province from '../data/province'
 
 defineOptions({
@@ -148,7 +148,7 @@ let changeSelect = (val: number) => {
 }
 onMounted(() => {
   // 获取下拉框的城市数据
-  let values = Object.values(cities.value).flat(2)
+  let values = Object.values(cities.value).flat(2) // es2019
   allCity.value = values
   options.value = values
 })

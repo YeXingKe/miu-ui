@@ -80,7 +80,6 @@ export const generateTypesDefinitions = async () => {
   })
   await Promise.all(rewriteTasks)
   const sourceDir = path.join(typesDir, 'miu-ui')
-  console.log('sourceDir====', sourceDir)
   await copy(sourceDir, typesDir) // 将源目录中的文件复制到目标目录。
   await remove(sourceDir)
 }

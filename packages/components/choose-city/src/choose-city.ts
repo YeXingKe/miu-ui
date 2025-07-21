@@ -1,3 +1,5 @@
+import type ChooseCity from './choose-city.vue'
+
 export interface City {
   id: number
   spell: string // 拼音
@@ -9,3 +11,5 @@ export interface Provice {
   data: string[]
   id?: string
 }
+
+export type AffixInstance = InstanceType<typeof ChooseCity> & unknown

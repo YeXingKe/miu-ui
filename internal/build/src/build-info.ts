@@ -1,6 +1,6 @@
 import path from 'path'
-import { PKG_NAME } from '../../build-constants/src'
-import { epOutput } from '../../build-utils/src'
+import { PKG_NAME } from '@miu-ui/build-constants'
+import { epOutput } from '@miu-ui/build-utils'
 
 import type { ModuleFormat } from 'rollup'
 
