@@ -1,4 +1,8 @@
 import type ChooseCity from './choose-city.vue'
+import { CascaderProps } from 'element-plus'
+
+export type ShowTypes = 'popover' | 'select'
+
 
 export interface City {
   id: number
@@ -12,4 +16,14 @@ export interface Provice {
   id?: string
 }
 
-export type AffixInstance = InstanceType<typeof ChooseCity> & unknown
+export interface ProviceAndCityData {
+  code: string,
+  name: string,
+  children?: Array<ProviceAndCityData>
+}
+
+export interface ChooseCityProps extends CascaderProps {
+  selectedValue: string
+}
+
+export type ChooseCityInstance = InstanceType<typeof ChooseCity> & unknown

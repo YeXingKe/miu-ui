@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { MiuChooseCity } from '@miu-ui/components'
+</script>
 
 <template>
-  <div></div>
+  <div>
+    <miu-choose-city></miu-choose-city>
+  </div>
 </template>
 
 <style scoped>

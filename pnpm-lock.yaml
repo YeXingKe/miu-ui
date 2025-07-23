@@ -23,6 +23,9 @@ importers:
       element-plus:
         specifier: ^2.10.4
         version: 2.10.4(vue@3.5.13(typescript@5.7.3))
+      region-data:
+        specifier: ^1.2.3
+        version: 1.2.3
       rimraf:
         specifier: ^6.0.1
         version: 6.0.1
@@ -6029,6 +6032,9 @@ packages:
   regexp.prototype.flags@1.5.4:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
     engines: {node: '>= 0.4'}
+
+  region-data@1.2.3:
+    resolution: {integrity: sha512-hZx2IwcvaTaQ60ZQ277A7oPMMyVDRgG4vr28ph2wqW1L4colvOU5omBUCMpKGWW63M4gL7LjVYDRFj2ADp8A4Q==}
 
   remove-trailing-separator@1.1.0:
     resolution: {integrity: sha512-/hS+Y0u3aOfIETiaiirUFwDBDzmXPvO+jAfKTitUngIPzdKc6Z0LoFjM/CK5PL4C+eKwHohlHAb6H0VFfmmUsw==}
@@ -13293,6 +13299,8 @@ snapshots:
       get-proto: 1.0.1
       gopd: 1.2.0
       set-function-name: 2.0.2
+
+  region-data@1.2.3: {}
 
   remove-trailing-separator@1.1.0: {}
 

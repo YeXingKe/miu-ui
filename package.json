@@ -31,6 +31,7 @@
     "@miu-ui/theme-chalk": "workspace:*",
     "@miu-ui/utils": "workspace:*",
     "element-plus": "^2.10.4",
+    "region-data": "^1.2.3",
     "rimraf": "^6.0.1",
     "sass": "^1.89.2",
     "vue": "^3.5.13"
