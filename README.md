@@ -20,3 +20,5 @@ node -e "console.log(require.resolve('@miu-ui/build-utils'))"
 pnpm i -D @storybook/addon-essentials@latest @storybook/addon-interactions@latest @storybook/addon-styling@latest @storybook/testing-library@latest @storybook/theming@latest @storybook/types@latest
 
 pnpm remove @storybook/addon-essentials @storybook/addon-interactions @storybook/addon-styling @storybook/testing-library @storybook/theming @storybook/types
+
+corepack enable // 允许项目通过 package.json 的 packageManager 字段锁定包管理器版本

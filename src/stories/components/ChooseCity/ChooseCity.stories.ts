@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 import { expect, userEvent, within } from 'storybook/test'
 
-import MiuChooseCity from '@miu-ui/components/choose-city/src/index.vue'
+import MiuChooseCity from '@miu-ui/components/choose-city'
 
 const meta = {
   title: 'MiuChooseCity',

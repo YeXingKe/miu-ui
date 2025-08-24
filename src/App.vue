@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { MiuChooseCity } from '@miu-ui/components'
+import MiuDraggable from '@miu-ui/components/draggable'
 </script>
 
 <template>
   <div>
-    <miu-choose-city></miu-choose-city>
+    <MiuDraggable />
   </div>
 </template>
 
