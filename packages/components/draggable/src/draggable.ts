@@ -1,9 +1,3 @@
-export interface City {
-  id: number
-  spell: string // 拼音
-  name: string // 名字
-}
-
 export interface GroupObject {
   name?: string
   /**
@@ -136,3 +130,11 @@ export class Draggable {
    */
   onChange?: (event: Event) => void
 }
+
+// Event
+// to：HTMLElement--移动到列表容器
+// from：HTMLElement--来源的列表容器
+// item：HTMLElement--被移动的列表单元
+// clone：HTMLElement--副本的列表单元
+// oldIndex：number/undefined--在列表容器中的原序号
+// newIndex：number/undefined--在列表容器中的新序号

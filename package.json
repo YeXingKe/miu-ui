@@ -17,7 +17,9 @@
     "clean:dist": "rimraf dist",
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "engines": {
     "node": ">= 18"
@@ -30,7 +32,10 @@
     "@miu-ui/components": "workspace:*",
     "@miu-ui/theme-chalk": "workspace:*",
     "@miu-ui/utils": "workspace:*",
+    "@vue/test-utils": "^2.4.6",
+    "D": "^1.0.0",
     "element-plus": "^2.10.4",
+    "jsdom": "^26.1.0",
     "region-data": "^1.2.3",
     "rimraf": "^6.0.1",
     "sass": "^1.89.2",

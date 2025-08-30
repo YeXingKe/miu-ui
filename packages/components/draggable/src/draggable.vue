@@ -19,7 +19,13 @@ onMounted(() => {
     listRef.value,
     new Draggable({
       animation: 150, // 拖拽时 150 ms 平滑动画
-      ghostClass: 'blue-background-class'
+      ghostClass: 'blue-background-class',
+      onAdd: event => {
+        console.log(event, '---onAdd')
+      },
+      onChange: event => {
+        console.log(event, '---onChange')
+      }
     })
   )
 })
@@ -32,8 +38,8 @@ onMounted(() => {
   .item {
     width: 100%;
     height: 100px;
-    border: 1px solid #fff;
-    background-color: olivedrab;
+    border: 1px solid grey;
+    // background-color: olivedrab;
   }
 }
 

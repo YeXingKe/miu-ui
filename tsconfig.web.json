@@ -4,7 +4,7 @@
       "composite": true,
       "jsx": "preserve",
       "lib": ["es2019", "DOM", "DOM.Iterable"],
-      "types": [""],
+      "types": ["vitest/globals"],
       "skipLibCheck": true,
       "resolveJsonModule": true, // 👈 允许 import JSON
     },
