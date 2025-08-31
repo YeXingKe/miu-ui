@@ -1,0 +1,42 @@
+.sign-container{
+    width: 100%;
+    text-align: center;
+}
+
+.sign-area{
+    border: 1px solid #efefef;
+}
+
+.button-area{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+// @media (max-width: 768px) {
+
+// }
+
+@media (max-width: 480px) {
+    .sign-container{
+        width: 90vw;
+        height: 90vh;
+        display: flex;
+        justify-content: center;
+        flex-direction: row-reverse;
+        box-sizing: border-box;
+    }
+
+    .button-area{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+}
+
+:deep(.el-button){
+    outline-color: none;
+}

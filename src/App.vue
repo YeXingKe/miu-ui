@@ -5,7 +5,7 @@ import MiuSignature from '@miu-ui/components/signature'
 
 <template>
   <div>
-    <MiuDraggable />
+    <!-- <MiuDraggable /> -->
     <MiuSignature />
   </div>
 </template>

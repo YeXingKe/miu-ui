@@ -1,21 +1,18 @@
 <template>
-  <div>
-    <el-button type="primary" @click="sign">{{ btn }}</el-button>
-    <miu-dialog :title="title" ref="modalRef" :isCuscomFooter="true">
-      <div class="sign-bg">
-        <canvas ref="canvasRef" :width="width" :height="height" @mousedown="mousedown" @mousemove="mousemove" @mouseup="mouseup"></canvas>
-      </div>
-      <template #footer>
-        <el-button @click="close">关 闭</el-button>
-        <el-button @click="handleClear">清 除</el-button>
-        <el-button class="ml-2" type="primary" @click="confirm"> 保 存 </el-button>
-      </template>
-    </miu-dialog>
+  <div class="sign-container">
+    <div class="sign-area">
+      <canvas ref="canvasRef" :width="width" :height="height" @mousedown="mousedown" @mousemove="mousemove" @mouseup="mouseup"></canvas>
+    </div>
+    <div class="button-area">
+      <!-- <el-button @click="close">关 闭</el-button> -->
+      <slot name="buttonArea"></slot>
+      <el-button @click="handleClear" data-testid="clear-btn">清 除</el-button>
+      <el-button class="ml-2" type="primary" @click="confirm" data-testid="save-btn"> 保 存 </el-button>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import { MiuDialog } from '@miu-ui/components'
 import { Util } from '@miu-ui/utils'
 import { ElMessage } from 'element-plus'
 
@@ -40,7 +37,7 @@ const props = defineProps({
     type: Number,
     default: 300
   },
-  strokeColor: {
+  lineColor: {
     type: String,
     default: '#000'
   },
@@ -91,7 +88,7 @@ function mousemove(event) {
     y: event.offsetY
   }
   ctx.value = canvasRef.value.getContext('2d')
-  ctx.value.strokeStyle = props.strokeColor // 线条颜色
+  ctx.value.strokeStyle = props.lineColor // 线条颜色
   ctx.value.lineWidth = props.lineWidth // 线条宽度
   ctx.value.beginPath() // 开始描绘路径
   ctx.value.moveTo(startX.value, startY.value) // 鼠标按下时直线起点
@@ -118,8 +115,3 @@ onMounted(() => {
   // }
 })
 </script>
-<style lang="scss" scoped>
-.sign-bg {
-  border: 1px solid #efefef;
-}
-</style>

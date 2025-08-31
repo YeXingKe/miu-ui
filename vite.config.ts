@@ -1,4 +1,4 @@
-/// <reference types="vitest/config" />
+/// <reference types="vitest/config" />  
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -78,31 +78,48 @@ export default defineConfig({
     }
   },
   test: {
-    projects: [
-      {
-        extends: true,
-        plugins: [
-          // The plugin will run tests for the stories defined in your Storybook config
-          // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-          storybookTest({
-            configDir: path.join(dirname, '.storybook')
-          })
-        ],
-        test: {
-          name: 'storybook',
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: 'playwright',
-            instances: [
-              {
-                browser: 'chromium'
-              }
-            ]
-          },
-          setupFiles: ['.storybook/vitest.setup.ts']
-        }
-      }
-    ]
+    css: false,  // 1. 直接禁止加载任何 CSS 文件
+    clearMocks: true, // 在每个测试用例之前自动清除所有模拟（mock）的调用和实例
+    environment: 'jsdom',// 指定测试运行的环境。这里设置为`'jsdom'`，表示使用jsdom模拟浏览器环境
+    setupFiles: ['./vitest.setup.ts'],// 通常用于设置测试环境，例如全局的polyfill、插件或配置
+    reporters: ['default'],// 指定测试报告器
+    testTransformMode: { // 指定测试中需要转换的模式  
+      web: ['*.{ts,tsx}'], // 指定哪些文件需要被转换（transpile）为在web环境中运行的代码
+    },
+    coverage: { // 配置测试覆盖率相关设置
+      reporter: ['text', 'json-summary', 'json'],
+      exclude: [
+        'packages/components/*/style/**',
+        'node_modules',
+        'dist',
+      ],
+    },
+    // 定义多个测试项目（project）
+    // projects: [
+    //   {
+    //     extends: true,
+    //     plugins: [
+    //       // The plugin will run tests for the stories defined in your Storybook config
+    //       // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+    //       storybookTest({
+    //         configDir: path.join(dirname, '.storybook')
+    //       })
+    //     ],
+    //     test: {
+    //       name: 'storybook',
+    //       browser: {
+    //         enabled: true,
+    //         headless: true,
+    //         provider: 'playwright',
+    //         instances: [
+    //           {
+    //             browser: 'chromium'
+    //           }
+    //         ]
+    //       },
+    //       setupFiles: ['.storybook/vitest.setup.ts']
+    //     }
+    //   }
+    // ]
   }
 })
