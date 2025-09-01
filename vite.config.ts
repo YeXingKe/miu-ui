@@ -83,6 +83,10 @@ export default defineConfig({
     environment: 'jsdom',// 指定测试运行的环境。这里设置为`'jsdom'`，表示使用jsdom模拟浏览器环境
     setupFiles: ['./vitest.setup.ts'],// 通常用于设置测试环境，例如全局的polyfill、插件或配置
     reporters: ['default'],// 指定测试报告器
+    deps: {
+      // 将 element-plus 添加到内联依赖
+      inline: [/element-plus/]
+    },
     testTransformMode: { // 指定测试中需要转换的模式  
       web: ['*.{ts,tsx}'], // 指定哪些文件需要被转换（transpile）为在web环境中运行的代码
     },

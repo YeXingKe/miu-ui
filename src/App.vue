@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import MiuDraggable from '@miu-ui/components/draggable'
 import MiuSignature from '@miu-ui/components/signature'
+import MiuStamp from '@miu-ui/components/stamp'
 </script>
 
 <template>
   <div>
     <!-- <MiuDraggable /> -->
-    <MiuSignature />
+    <!-- <MiuSignature /> -->
+    <MiuStamp />
   </div>
 </template>
 

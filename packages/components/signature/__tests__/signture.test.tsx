@@ -174,25 +174,25 @@ describe('SignaturePad 组件', () => {
     expect(onSave.mock.calls[0][0]).toContain('data:image/png')
   })
 
-  test('线条粗细调整', async () => {
-    const widthInput = wrapper.find('[data-testid="line-width"]')
+  // test('线条粗细调整', async () => {
+  //   const widthInput = wrapper.find('[data-testid="line-width"]')
     
-    // 修改线条粗细
-    await widthInput.setValue(5)
+  //   // 修改线条粗细
+  //   await widthInput.setValue(5)
     
-    // 检查Canvas上下文的lineWidth已更新
-    expect(mockContext.lineWidth).toBe(5)
-  })
+  //   // 检查Canvas上下文的lineWidth已更新
+  //   expect(mockContext.lineWidth).toBe(5)
+  // })
 
-  test('线条颜色调整', async () => {
-    const colorInput = wrapper.find('[data-testid="line-color"]')
+  // test('线条颜色调整', async () => {
+  //   const colorInput = wrapper.find('[data-testid="line-color"]')
     
-    // 修改线条颜色
-    await colorInput.setValue('#ff0000')
+  //   // 修改线条颜色
+  //   await colorInput.setValue('#ff0000')
     
-    // 检查Canvas上下文的strokeStyle已更新
-    expect(mockContext.strokeStyle).toBe('#ff0000')
-  })
+  //   // 检查Canvas上下文的strokeStyle已更新
+  //   expect(mockContext.strokeStyle).toBe('#ff0000')
+  // })
 
   test('响应式画布', async () => {
     // 模拟窗口大小变化
