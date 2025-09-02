@@ -1,117 +1,216 @@
 <template>
   <div class="sign-container">
-    <div class="sign-area">
-      <canvas ref="canvasRef" :width="width" :height="height" @mousedown="mousedown" @mousemove="mousemove" @mouseup="mouseup"></canvas>
+    <div class="sign-area" ref="canvasContainerRef">
+      <canvas
+        ref="canvasRef"
+        @mousedown="startDrawing"
+        @mousemove="draw"
+        @mouseup="stopDrawing"
+        @mouseleave="stopDrawing"
+        @touchstart="startDrawingTouch"
+        @touchmove="drawTouch"
+        @touchend="stopDrawing"
+      ></canvas>
     </div>
     <div class="button-area">
       <!-- <el-button @click="close">关 闭</el-button> -->
       <slot name="buttonArea"></slot>
-      <el-button @click="handleClear" data-testid="clear-btn">清 除</el-button>
-      <el-button class="ml-2" type="primary" @click="confirm" data-testid="save-btn"> 保 存 </el-button>
+      <el-button @click="clearCanvas" data-testid="clear-btn">清 除</el-button>
+      <el-button class="ml-2" type="primary" @click="saveSignature" data-testid="save-btn"> 保 存 </el-button>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { Util } from '@miu-ui/utils'
-import { ElMessage } from 'element-plus'
+// import { ElMessage } from 'element-plus'
 
 defineOptions({
   name: 'MiuSignture'
 })
 
-const props = defineProps({
-  title: {
-    type: String,
-    default: '电子签名'
-  },
-  btn: {
-    type: String,
-    default: '电子签名'
-  },
-  width: {
-    type: Number,
-    default: 500
-  },
-  height: {
-    type: Number,
-    default: 300
-  },
-  lineColor: {
-    type: String,
-    default: '#000'
-  },
-  lineWidth: {
-    type: Number,
-    default: 2
-  }
+const props = withDefaults(
+  defineProps<{
+    width?: number
+    height?: number
+    lineColor?: string
+    lineWidth?: number
+  }>(),
+  { width: 500, height: 300, lineColor: '#000', lineWidth: 2 }
+)
+
+const canvasRef = ref<HTMLCanvasElement | null>(null)
+const canvasContainerRef = ref<HTMLElement | null>(null)
+const ctx = ref<CanvasRenderingContext2D | null>(null)
+const isDrawing = ref(false)
+const hasDrawing = ref(false)
+const lastX = ref(0)
+const lastY = ref(0)
+const canvasWidth = ref(props.width)
+const canvasHeight = ref(props.height)
+
+// 初始化画布
+onMounted(() => {
+  initCanvas()
+  window.addEventListener('resize', handleResize)
 })
 
-let modalRef = ref()
-let ctx = ref()
-let canvasRef = ref()
-let isDraw = ref(false)
-let startX = ref(0)
-let startY = ref(0)
-let points: Array<any> = []
-const sign = () => {
-  modalRef.value.open()
-}
-const close = () => {
-  modalRef.value.close()
-}
-const emits = defineEmits(['confirm'])
-const confirm = () => {
-  if (points.length < 20) {
-    ElMessage.error('签名不能为空！')
-    return
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
+
+// 处理窗口大小变化
+const handleResize = () => {
+  if (canvasContainerRef.value) {
+    initCanvasSize()
+    redrawCanvas()
   }
-  const baseFile = canvasRef.value.toDataURL() // 默认转成png格式的图片编码，这是base-64格式图片
-  const fileName = Date.now() // 用时间戳做文件名
-  const file = Util.dataURLtoFile(baseFile, fileName + '') // 图片文件信息，传给后端存储
-  emits('confirm', { fileInfo: file, imageData: baseFile }) // 暴露出去的信息
-  modalRef.value.close()
+}
+// 初始化画布大小
+const initCanvasSize = () => {
+  if (canvasContainerRef.value) {
+    // 赋值容器宽度
+    canvasWidth.value = canvasContainerRef.value.clientWidth
+  }
+
+  if (canvasRef.value) {
+    canvasRef.value.width = canvasWidth.value
+    canvasRef.value.height = canvasHeight.value
+  }
 }
 
-function mousedown(event) {
-  event.preventDefault()
-  startX.value = event.offsetX
-  startY.value = event.offsetY
-  isDraw.value = true // 开启绘画转态
-}
+// 初始化画布
+const initCanvas = () => {
+  if (!canvasRef.value) return
 
-function mousemove(event) {
-  event.preventDefault()
-  if (!isDraw.value) return
-  const obj = {
-    x: event.offsetX,
-    y: event.offsetY
-  }
+  initCanvasSize() // 初始化画布大小
   ctx.value = canvasRef.value.getContext('2d')
-  ctx.value.strokeStyle = props.lineColor // 线条颜色
-  ctx.value.lineWidth = props.lineWidth // 线条宽度
-  ctx.value.beginPath() // 开始描绘路径
-  ctx.value.moveTo(startX.value, startY.value) // 鼠标按下时直线起点
-  ctx.value.lineTo(obj.x, obj.y) // 线条结束坐标
-  ctx.value.stroke() // 绘制图形的线条
-  ctx.value.closePath() // 闭合绘图路径
-  startX.value = obj.x // 更新开始位置
-  startY.value = obj.y
-  points.push(obj) // 记录坐标
+  initContext() // 初始化画布内容
 }
 
-function mouseup(event) {
-  isDraw.value = false
+// 初始化上下文设置
+const initContext = () => {
+  if (!ctx.value) return
+  ctx.value.lineCap = 'round'
+  ctx.value.lineJoin = 'round'
+  ctx.value.lineWidth = props.lineWidth
+  ctx.value.strokeStyle = props.lineColor
 }
 
-function handleClear() {
-  // 清空给定矩形内的指定像素
-  ctx.value.clearRect(0, 0, props.width, props.height)
-  points = []
+// 开始绘制（鼠标）
+const startDrawing = e => {
+  if (!ctx.value || !canvasRef.value) return
+
+  isDrawing.value = true
+  hasDrawing.value = true
+  const rect = canvasRef.value.getBoundingClientRect() // 提供了元素的大小及其相对于视口(viewport)的位置信息
+  lastX.value = e.clientX - rect.left
+  lastY.value = e.clientY - rect.top
+
+  ctx.value.beginPath()
+  ctx.value.moveTo(lastX.value, lastY.value)
 }
-onMounted(() => {
-  // if (modalRef.value.dialogVisible) {
-  //   initCanvas()
-  // }
+
+// 绘制（鼠标）
+const draw = e => {
+  if (!isDrawing.value || !ctx.value || !canvasRef.value) return
+
+  const rect = canvasRef.value.getBoundingClientRect()
+  const currentX = e.clientX - rect.left // 元素左边相对于视口左边的距离
+  const currentY = e.clientY - rect.top // 元素顶部相对于视口顶部的距离
+
+  ctx.value.lineTo(currentX, currentY)
+  ctx.value.stroke()
+
+  lastX.value = currentX
+  lastY.value = currentY
+}
+
+// 开始绘制（触摸）
+const startDrawingTouch = e => {
+  if (!ctx.value || !canvasRef.value) return
+  e.preventDefault()
+  isDrawing.value = true
+  hasDrawing.value = true
+  const rect = canvasRef.value.getBoundingClientRect()
+  const touch = e.touches[0]
+  lastX.value = touch.clientX - rect.left
+  lastY.value = touch.clientY - rect.top
+
+  ctx.value.beginPath()
+  ctx.value.moveTo(lastX.value, lastY.value)
+}
+
+// 绘制（触摸）
+const drawTouch = e => {
+  if (!isDrawing.value || !ctx.value || !canvasRef.value) return
+
+  e.preventDefault()
+  const rect = canvasRef.value.getBoundingClientRect()
+  const touch = e.touches[0]
+  const currentX = touch.clientX - rect.left
+  const currentY = touch.clientY - rect.top
+
+  ctx.value.lineTo(currentX, currentY)
+  ctx.value.stroke()
+
+  lastX.value = currentX
+  lastY.value = currentY
+}
+
+// 停止绘制
+const stopDrawing = () => {
+  isDrawing.value = false
+}
+
+// 清除画布
+const clearCanvas = () => {
+  if (!ctx.value) return
+
+  ctx.value.clearRect(0, 0, canvasWidth.value, canvasHeight.value)
+  initContext()
+  hasDrawing.value = false
+}
+
+// // 改变线条颜色
+// const changeColor = color => {
+//   currentColor.value = color
+//   if (ctx.value) {
+//     ctx.value.strokeStyle = color
+//   }
+// }
+
+// // 改变线条宽度
+// const changeWidth = width => {
+//   currentWidth.value = width
+//   if (ctx.value) {
+//     ctx.value.lineWidth = width
+//   }
+// }
+
+// 重绘画布（响应式调整时）
+const redrawCanvas = () => {
+  // 在实际应用中，你可能需要实现保存和恢复绘图数据的功能
+  // 这里只是简单重新初始化画布
+  initContext()
+}
+
+const emits = defineEmits(['save'])
+// 保存签名
+const saveSignature = () => {
+  if (!canvasRef.value || !hasDrawing.value) return
+
+  try {
+    const signatureDataUrl = canvasRef.value.toDataURL('image/png') // 默认转成png格式的图片编码，这是base-64格式图片
+    const fileName = Date.now() // 用时间戳做文件名
+    const file = Util.dataURLtoFile(signatureDataUrl, fileName + '') // 图片文件信息，传给后端存储
+    emits('save', { fileInfo: file, imageData: signatureDataUrl }) // 暴露出去的信息
+  } catch (error) {
+    console.error('save error:', error)
+  }
+}
+
+defineExpose({
+  ctx
 })
 </script>

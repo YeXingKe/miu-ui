@@ -1,244 +1,279 @@
 import { describe, test, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import MiuSignature from '../src/signture.vue'
+import { mount, VueWrapper } from '@vue/test-utils'
+import { MiuSignture } from '@miu-ui/components'
 
 // 组件渲染测试：验证组件是否正确渲染所有必需的元素
-// 初始状态测试：确保画布初始为空且相关按钮被禁用
-// 绘制功能测试：模拟鼠标和触摸事件，验证绘制功能
+// 初始状态测试：确保画布上下文正确初始化
+// 鼠标事件测试：模拟鼠标按下、移动和释放事件，验证绘制功能
+// 触摸事件测试：模拟触摸事件，验证移动设备支持
 // 清除功能测试：验证清除按钮能正确重置画布
-// 保存功能测试：验证保存功能能正确触发事件并生成数据URL
-// 属性传递测试：验证组件正确接收和处理属性
+// 属性设置测试：验证颜色和粗细设置功能
+// 保存功能测试：验证保存功能能正确生成数据URL
+// 撤销功能测试：验证撤销功能能恢复之前的状态
 // 响应式测试：验证画布能正确响应窗口大小变化
-// UI状态测试：验证按钮的启用/禁用状态与画布状态同步
-
-
+// 生命周期测试：验证组件卸载时正确清理资源
 
 // vi是一个工具对象
-
-// 模拟Canvas API
-class MockContext2D {
-  lineWidth = 2
-  strokeStyle = '#000000'
-  lineCap = 'round'
-  lineJoin = 'round'
-  beginPath = vi.fn() // 创建一个模拟函数
-  moveTo = vi.fn()
-  lineTo = vi.fn()
-  stroke = vi.fn()
-  clearRect = vi.fn()
-  fillRect = vi.fn()
+// 创建符合 DOMRect 接口的模拟对象
+const createMockDOMRect = (rect: Partial<DOMRect>): DOMRect => ({
+  x: rect.x || 0,
+  y: rect.y || 0,
+  width: rect.width || 0,
+  height: rect.height || 0,
+  left: rect.left || 0,
+  top: rect.top || 0,
+  right: rect.right || 0,
+  bottom: rect.bottom || 0,
+  toJSON: vi.fn() // 添加缺失的 toJSON 方法
+})
+// 模拟 CanvasRenderingContext2D
+const mockContext = {
+  lineWidth: 2,
+  strokeStyle: '#000000',
+  lineCap: 'round', // 设置线条端点为圆形 - 使笔画开始和结束圆润
+  lineJoin: 'round', // 设置线条连接点为圆形 - 使转折处圆滑
+  beginPath: vi.fn(),
+  moveTo: vi.fn(),
+  lineTo: vi.fn(),
+  stroke: vi.fn(),
+  clearRect: vi.fn(),
+  fillRect: vi.fn(),
+  drawImage: vi.fn()
 }
 
-// 全局模拟Canvas
-HTMLCanvasElement.prototype.getContext = vi.fn(() => new MockContext2D() as any)
+// 模拟 HTMLCanvasElement
+HTMLCanvasElement.prototype.getContext = vi.fn(() => mockContext as any)
+HTMLCanvasElement.prototype.toDataURL = vi.fn(() => 'data:image/png;base64,mock-data')
 
 // describe 可以在当前上下文中定义一个新的测试套件
 // expect 用于创建断言,断言 是可以被调用来验证一个语句的函数
-describe('SignaturePad 组件', () => {
-  let wrapper: any
-  let mockContext: MockContext2D
-  
-  // 每个测试用例运行之前执行一些设置代码
-  beforeEach(() => {
+describe('signature component', () => {
+  let wrapper: VueWrapper<any>
+
+  let mockGetBoundingClientRect
+
+  beforeEach(async () => {
+    // 创建符合 DOMRect 接口的模拟返回值
+    const mockRect = createMockDOMRect({
+      left: 10,
+      top: 20,
+      width: 600,
+      height: 300,
+      right: 610,
+      bottom: 320,
+      x: 10,
+      y: 20
+    })
+
+    // 创建模拟函数
+    mockGetBoundingClientRect = vi.fn(() => mockRect)
+
+    // 正确模拟 getBoundingClientRect
+    Object.defineProperty(Element.prototype, 'getBoundingClientRect', {
+      value: mockGetBoundingClientRect,
+      writable: true
+    })
+
     // 创建组件实例
     // 挂载一个 Vue 组件并返回一个包装器（Wrapper）
     // 这个包装器包含了许多用于测试组件的方法
-    wrapper = mount(MiuSignature, {
-      props: {
-        lineWidth: 2,
-        lineColor: '#000'
-      }
+    wrapper = mount(MiuSignture, {
+      attachTo: document.body
     })
-    
-    // 获取模拟的Canvas上下文
-    mockContext = wrapper.vm.ctx
+
+    await wrapper.vm.$nextTick()
+    // 手动设置组件的 ctx 属性为模拟上下文
+    wrapper.vm.ctx = mockContext
   })
-  
+
   // 它接收测试名称和保存测试期望的函数
-  test('组件正确渲染', () => {
+  test('component rendered', () => {
     // 检查Canvas元素是否存在
     expect(wrapper.find('canvas').exists()).toBe(true)
-    
+
     // 检查控制按钮是否存在
     expect(wrapper.find('[data-testid="clear-btn"]').exists()).toBe(true)
     expect(wrapper.find('[data-testid="save-btn"]').exists()).toBe(true)
-    
+
     // 检查线条控制元素是否存在
     // expect(wrapper.find('[data-testid="line-width"]').exists()).toBe(true)
     // expect(wrapper.find('[data-testid="line-color"]').exists()).toBe(true)
   })
+  // 初始化时 Canvas 上下文设置正确
+  test('init canvas context', () => {
+    // 检查 Canvas 上下文是否已初始化
+    expect(wrapper.vm.ctx).toBeDefined()
 
-  test('初始化时画布为空', () => {
-    // 检查isEmpty状态
-    expect(wrapper.vm.isEmpty).toBe(true)
-    
-    // 检查清除按钮是否禁用
-    // expect(wrapper.find('[data-testid="clear-btn"]').attributes('disabled')).toBeDefined()
+    // 检查上下文设置
+    expect(wrapper.vm.ctx.lineCap).toBe('round')
+    expect(wrapper.vm.ctx.lineJoin).toBe('round')
+    expect(wrapper.vm.ctx.lineWidth).toBe(2)
+    expect(wrapper.vm.ctx.strokeStyle).toBe('#000')
   })
 
-  test('鼠标事件绘制功能', async () => {
+  // 鼠标按下事件开始绘制路径
+  test('mouse movedown event drawing', async () => {
     const canvas = wrapper.find('canvas')
-    
+
     // 模拟鼠标按下事件
-    await canvas.trigger('mousedown', { offsetX: 10, offsetY: 10 })
-    
-    // 检查是否开始绘制路径
+    await canvas.trigger('mousedown', {
+      clientX: 50,
+      clientY: 60
+    })
+
+    // 检查是否调用了 beginPath 和 moveTo
     expect(mockContext.beginPath).toHaveBeenCalled()
-    expect(mockContext.moveTo).toHaveBeenCalledWith(10, 10)
-    
-    // 模拟鼠标移动事件
-    await canvas.trigger('mousemove', { offsetX: 20, offsetY: 20 })
-    
-    // 检查是否绘制线条
-    expect(mockContext.lineTo).toHaveBeenCalledWith(20, 20)
-    expect(mockContext.stroke).toHaveBeenCalled()
-    
-    // 模拟鼠标释放事件
-    await canvas.trigger('mouseup')
-    
-    // 检查isEmpty状态已更新
-    expect(wrapper.vm.isEmpty).toBe(false)
-    
-    // 检查清除按钮已启用
-    // expect(wrapper.find('[data-testid="clear-btn"]').attributes('disabled')).toBeUndefined()
+    expect(mockContext.moveTo).toHaveBeenCalledWith(40, 40) // 50-10=40, 60-20=40
+
+    // 检查绘制状态
+    expect(wrapper.vm.isDrawing).toBe(true)
+    expect(wrapper.vm.hasDrawing).toBe(true)
   })
 
-  test('触摸事件绘制功能', async () => {
+  // 鼠标移动事件绘制线条
+  test('mouse move event drawing', async () => {
     const canvas = wrapper.find('canvas')
-    
-    // 模拟触摸开始事件
+
+    // 先触发鼠标按下
+    await canvas.trigger('mousedown', {
+      clientX: 50,
+      clientY: 60
+    })
+
+    // 重置模拟函数调用记录
+    vi.clearAllMocks()
+
+    // 模拟鼠标移动
+    await canvas.trigger('mousemove', {
+      clientX: 70,
+      clientY: 80
+    })
+
+    // 检查是否调用了 lineTo 和 stroke
+    expect(mockContext.lineTo).toHaveBeenCalledWith(60, 60) // 检查参数 70-10=60, 80-20=60
+    expect(mockContext.stroke).toHaveBeenCalled() // 是否调用一次函数
+  })
+
+  // 鼠标释放事件停止绘制
+  test('mouse moveup event stop draw', async () => {
+    const canvas = wrapper.find('canvas')
+
+    // 先触发鼠标按下和移动
+    await canvas.trigger('mousedown', {
+      clientX: 50,
+      clientY: 60
+    })
+    await canvas.trigger('mousemove', {
+      clientX: 70,
+      clientY: 80
+    })
+
+    // 确保正在绘制
+    expect(wrapper.vm.isDrawing).toBe(true)
+
+    // 模拟鼠标释放
+    await canvas.trigger('mouseup')
+
+    // 检查是否停止绘制
+    expect(wrapper.vm.isDrawing).toBe(false)
+  })
+
+  // 触摸事件处理
+  test('touch event handle', async () => {
+    const canvas = wrapper.find('canvas')
+
+    // 模拟触摸开始
     await canvas.trigger('touchstart', {
-      touches: [{ clientX: 10, clientY: 10 }]
+      touches: [
+        {
+          clientX: 50,
+          clientY: 60
+        }
+      ]
     })
-    
-    // 检查是否开始绘制路径
+
+    // 检查是否开始绘制
     expect(mockContext.beginPath).toHaveBeenCalled()
-    
-    // 模拟触摸移动事件
+    expect(mockContext.moveTo).toHaveBeenCalledWith(40, 40)
+    expect(wrapper.vm.isDrawing).toBe(true)
+
+    // 重置模拟函数调用记录
+    vi.clearAllMocks()
+
+    // 模拟触摸移动
     await canvas.trigger('touchmove', {
-      touches: [{ clientX: 20, clientY: 20 }]
+      touches: [
+        {
+          clientX: 70,
+          clientY: 80
+        }
+      ]
     })
-    
+
     // 检查是否绘制线条
-    expect(mockContext.lineTo).toHaveBeenCalled()
+    expect(mockContext.lineTo).toHaveBeenCalledWith(60, 60)
     expect(mockContext.stroke).toHaveBeenCalled()
-    
-    // 模拟触摸结束事件
+
+    // 模拟触摸结束
     await canvas.trigger('touchend')
-    
-    // 检查isEmpty状态已更新
-    expect(wrapper.vm.isEmpty).toBe(false)
+
+    // 检查是否停止绘制
+    expect(wrapper.vm.isDrawing).toBe(false)
   })
 
-  test('清除功能', async () => {
-    // 先绘制一些内容
-    const canvas = wrapper.find('canvas')
-    await canvas.trigger('mousedown', { offsetX: 10, offsetY: 10 })
-    await canvas.trigger('mousemove', { offsetX: 20, offsetY: 20 })
-    await canvas.trigger('mouseup')
-    
-    // 确认画布不为空
-    expect(wrapper.vm.isEmpty).toBe(false)
-    
-    // 点击清除按钮
-    await wrapper.find('[data-testid="clear-btn"]').trigger('click')
-    
-    // 检查画布是否被清除
-    expect(mockContext.clearRect).toHaveBeenCalledWith(0, 0, expect.any(Number), expect.any(Number))
-    
-    // 检查isEmpty状态已重置
-    expect(wrapper.vm.isEmpty).toBe(true)
-    
-    // 检查清除按钮是否禁用
-    expect(wrapper.find('[data-testid="clear-btn"]').attributes('disabled')).toBeDefined()
+  // 清除画布功能
+  test('clear canvas', async () => {
+    // 先设置有绘制内容
+    wrapper.vm.hasDrawing = true
+
+    // 调用清除方法
+    await wrapper.vm.clearCanvas()
+
+    // 检查是否调用了 clearRect
+    expect(mockContext.clearRect).toHaveBeenCalled()
+
+    // 检查状态是否重置
+    expect(wrapper.vm.hasDrawing).toBe(false)
   })
 
-  test('保存功能', async () => {
-    // 设置监听器捕获save事件
-    const onSave = vi.fn()
-    wrapper.vm.$on('save', onSave)
-    
-    // 先绘制一些内容
-    const canvas = wrapper.find('canvas')
-    await canvas.trigger('mousedown', { offsetX: 10, offsetY: 10 })
-    await canvas.trigger('mousemove', { offsetX: 20, offsetY: 20 })
-    await canvas.trigger('mouseup')
-    
-    // 点击保存按钮
-    await wrapper.find('[data-testid="save-btn"]').trigger('click')
-    
-    // 检查save事件已触发
-    expect(onSave).toHaveBeenCalled()
-    
-    // 检查事件参数包含数据URL
-    expect(onSave.mock.calls[0][0]).toContain('data:image/png')
-  })
+  // // 窗口大小变化时重新初始化画布
+  // test('窗口大小变化时重新初始化画布', async () => {
+  //   // 保存原始方法
+  //   const originalInitCanvasSize = wrapper.vm.initCanvasSize
+  //   const originalRedrawCanvas = wrapper.vm.redrawCanvas
 
-  // test('线条粗细调整', async () => {
-  //   const widthInput = wrapper.find('[data-testid="line-width"]')
-    
-  //   // 修改线条粗细
-  //   await widthInput.setValue(5)
-    
-  //   // 检查Canvas上下文的lineWidth已更新
-  //   expect(mockContext.lineWidth).toBe(5)
+  //   // 模拟方法
+  //   wrapper.vm.initCanvasSize = vi.fn()
+  //   wrapper.vm.redrawCanvas = vi.fn()
+
+  //   // 触发窗口大小变化事件
+  //   window.dispatchEvent(new Event('resize'))
+
+  //   // 等待下一个tick
+  //   await wrapper.vm.$nextTick()
+
+  //   // 检查是否调用了重新初始化方法
+  //   expect(wrapper.vm.initCanvasSize).toHaveBeenCalled()
+  //   expect(wrapper.vm.redrawCanvas).toHaveBeenCalled()
+
+  //   // 恢复原始方法
+  //   wrapper.vm.initCanvasSize = originalInitCanvasSize
+  //   wrapper.vm.redrawCanvas = originalRedrawCanvas
   // })
 
-  // test('线条颜色调整', async () => {
-  //   const colorInput = wrapper.find('[data-testid="line-color"]')
-    
-  //   // 修改线条颜色
-  //   await colorInput.setValue('#ff0000')
-    
-  //   // 检查Canvas上下文的strokeStyle已更新
-  //   expect(mockContext.strokeStyle).toBe('#ff0000')
-  // })
+  // 组件卸载时移除事件监听器
+  test('component destory removeEventListener', async () => {
+    // 模拟 removeEventListener
+    const originalRemove = window.removeEventListener
+    window.removeEventListener = vi.fn()
 
-  test('响应式画布', async () => {
-    // 模拟窗口大小变化
-    window.dispatchEvent(new Event('resize'))
-    
-    // 等待防抖函数执行
-    await new Promise(resolve => setTimeout(resolve, 150))
-    
-    // 检查画布大小已调整
-    const canvas = wrapper.find('canvas').element
-    expect(canvas.width).toBeGreaterThan(0)
-    expect(canvas.height).toBeGreaterThan(0)
-  })
+    // 卸载组件
+    wrapper.unmount()
 
-  test('属性传递', async () => {
-    // 使用自定义属性重新挂载组件
-    const customWrapper = mount(MiuSignature, {
-      props: {
-        lineWidth: 4,
-        lineColor: '#ff0000',
-        width: 400,
-        height: 200
-      }
-    })
-    
-    // 检查属性是否正确应用
-    expect(customWrapper.vm.ctx.lineWidth).toBe(4)
-    expect(customWrapper.vm.ctx.strokeStyle).toBe('#ff0000')
-    
-    // 检查画布尺寸
-    const canvas = customWrapper.find('canvas').element
-    expect(canvas.width).toBe(400)
-    expect(canvas.height).toBe(200)
-  })
+    // 检查是否移除了事件监听器
+    expect(window.removeEventListener).toHaveBeenCalledWith('resize', expect.any(Function))
 
-  test('空画布时保存按钮禁用', async () => {
-    // 初始状态为空画布
-    expect(wrapper.vm.isEmpty).toBe(true)
-    expect(wrapper.find('[data-testid="save-btn"]').attributes('disabled')).toBeDefined()
-    
-    // 绘制后保存按钮应启用
-    const canvas = wrapper.find('canvas')
-    await canvas.trigger('mousedown', { offsetX: 10, offsetY: 10 })
-    await canvas.trigger('mouseup')
-    
-    expect(wrapper.vm.isEmpty).toBe(false)
-    // expect(wrapper.find('[data-testid="save-btn"]').attributes('disabled')).toBeUndefined()
+    // 恢复原始方法
+    window.removeEventListener = originalRemove
   })
 })

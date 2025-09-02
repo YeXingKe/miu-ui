@@ -40,6 +40,10 @@ import { Util } from '@miu-ui/utils'
 import { ref, onMounted } from 'vue'
 import { MiuDialog } from '@miu-ui/components'
 
+defineOptions({
+  name: 'MiuStamp'
+})
+
 const props = defineProps({
   title: {
     type: String,

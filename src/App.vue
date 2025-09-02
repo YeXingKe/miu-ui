@@ -7,7 +7,7 @@ import MiuStamp from '@miu-ui/components/stamp'
 <template>
   <div>
     <!-- <MiuDraggable /> -->
-    <!-- <MiuSignature /> -->
+    <MiuSignature />
     <MiuStamp />
   </div>
 </template>
