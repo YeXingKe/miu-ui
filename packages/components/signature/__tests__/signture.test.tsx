@@ -47,7 +47,7 @@ HTMLCanvasElement.prototype.toDataURL = vi.fn(() => 'data:image/png;base64,mock-
 
 // describe 可以在当前上下文中定义一个新的测试套件
 // expect 用于创建断言,断言 是可以被调用来验证一个语句的函数
-describe('signature component', () => {
+describe('signature component test', () => {
   let wrapper: VueWrapper<any>
 
   let mockGetBoundingClientRect
