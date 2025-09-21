@@ -1,4 +1,7 @@
+@use 'element-plus/dist/index.css';
+@use 'element-plus/theme-chalk/display.css';
 @use './choose-city.scss';
 @use './draggable.scss';
 @use './signture.scss';
-@use './stamp.scss'
+@use './stamp.scss';
+@use './attachment.scss';

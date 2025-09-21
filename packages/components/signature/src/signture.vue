@@ -26,7 +26,10 @@ import { Util } from '@miu-ui/utils'
 // import { ElMessage } from 'element-plus'
 
 defineOptions({
-  name: 'MiuSignture'
+  name: 'MiuSignture',
+  // 为了让我们能够完全自主地控制那些“未声明为 props 的属性”应该绑定到哪个具体的元素或组件上，
+  // 而不是让 Vue 默认地、可能是不正确地将其应用到组件的根元素上
+  inheritAttrs: false
 })
 
 const props = withDefaults(
