@@ -1,5 +1,5 @@
 import { withInstall } from '@miu-ui/utils'
-import Attachment from './src/attachment2.vue'
+import Attachment from './src/attachment.vue'
 import type { SFCWithInstall } from '@miu-ui/utils'
 
 export const MiuAttachment: SFCWithInstall<typeof Attachment> = withInstall(Attachment)
